@@ -1,0 +1,11 @@
+<div class="justify-center flex flex-col items-center" >
+    <h1 id="title">Hello {{ namea }}</h1>
+    <div id="image" (click)="changeImage()">{{ currentImage }}</div>
+    <div id="etatFaim">Faim <br> {{ etatFaim }} %</div>
+    <div id="etatBonheur">Bonheur <br> {{ etatBonheur }} %</div>
+    <div id="etatEnergie">Énergie <br> {{ etatEnergie }} %</div>
+    <div id="message">{{ message }}</div>
+    <button id="nourrir" (click)="addToEtat('faim')">Nourrir</button>
+    <button id="jouer" (click)="addToEtat('bonheur')">Jouer</button>
+    <button id="dormir" (click)="addToEtat('energie')">Dormir</button>
+  </div>
