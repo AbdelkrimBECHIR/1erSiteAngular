@@ -1,61 +1,72 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { WeatherService, WeatherData } from '../../services/weather.service';
+import { HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-meteo',
   standalone: true,
-  imports: [],
+  imports: [
+    HttpClientModule,
+    CommonModule,
+    FormsModule
+  ],
+  providers: [WeatherService],
   templateUrl: './meteo.component.html',
   styleUrl: './meteo.component.css'
 })
 export class MeteoComponent {
+  private weatherService = inject(WeatherService);
+  weatherData: WeatherData | null = null;
+  city: string = '';
+  currentDate: string = '';
+  errorMessage: string = '';
+  loading: boolean = false;
 
-  currentYear: number = new Date().getFullYear();
-  currentMonth: any = new Date().getMonth();
-  currentDate: number = new Date().getDate();
-  currentDay: any = new Date().getDay();
+  ngOnInit() {
+    this.searchWeather('Paris');
+  }
+
+  searchWeather(cityName: string) {
+    if (cityName.trim()) {
+      this.loading = true;
+      this.errorMessage = '';
+
+      this.weatherService.getWeatherByCity(cityName).subscribe({
+        next: (data) => {
+          this.weatherData = data;
+          this.loading = false;
+        },
+        error: (error) => {
+          console.error('Erreur lors de la recherche:', error);
+          this.errorMessage = 'Ville non trouvée ou erreur de recherche';
+          this.loading = false;
+          this.weatherData = null;
+        }
+      });
+    }
+  }
+
+  getWeatherIconUrl(icon: string): string {
+    return `http://openweathermap.org/img/w/${icon}.png`;
+  }
 
   constructor() {
-    if (this.currentMonth == 0){
-      this.currentMonth = "Janvier";
-        } else if (this.currentMonth == 1) {
-      this.currentMonth = "Février";
-        } else if (this.currentMonth == 2) {
-      this.currentMonth = "Mars";
-        } else if (this.currentMonth == 3) {
-      this.currentMonth = "Avril";
-        } else if (this.currentMonth == 4) {
-      this.currentMonth = "Mai";
-        } else if (this.currentMonth == 5) {
-      this.currentMonth = "Juin";
-        } else if (this.currentMonth == 6) {
-      this.currentMonth = "Juillet";
-        } else if (this.currentMonth == 7) {
-      this.currentMonth = "Août";
-        } else if (this.currentMonth == 8) {
-      this.currentMonth = "Septembre";
-        } else if (this.currentMonth == 9) {
-      this.currentMonth = "Octobre";
-        } else if (this.currentMonth == 10) {
-      this.currentMonth = "Novembre";
-        } else if (this.currentMonth == 11) {
-      this.currentMonth = "Décembre";
-        }
+    const date = new Date();
+    const joursSemaine = [
+      'dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'
+    ];
+    const mois = [
+      'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
+      'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'
+    ];
 
-    if (this.currentDay == 0){
-      this.currentDay = "Dimanche";
-        } else if (this.currentDay == 1) {
-      this.currentDay = "Lundi";
-        } else if (this.currentDay == 2) {
-      this.currentDay = "Mardi";
-        } else if (this.currentDay == 3) {
-      this.currentDay = "Mercredi";
-        } else if (this.currentDay == 4) {
-      this.currentDay = "Jeudi";
-        } else if (this.currentDay == 5) {
-      this.currentDay = "Vendredi";
-        } else if (this.currentDay == 6) {
-      this.currentDay = "Samedi";
-        }
-    }
+    const jour = joursSemaine[date.getDay()];
+    const numeroJour = date.getDate();
+    const nomMois = mois[date.getMonth()];
+    const annee = date.getFullYear();
 
+    this.currentDate = `${jour} ${numeroJour} ${nomMois} ${annee}`;
+  }
 }

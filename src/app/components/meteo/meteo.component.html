@@ -1,6 +1,84 @@
-<H2 class="flex justify-center font-medium ">La méteo du {{currentDay}} {{currentDate}} {{currentMonth}} {{currentYear}}</H2>
+<div class="container mx-auto px-4 py-8 mt-16">
+  <!-- Titre -->
+  <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">
+    La météo du {{currentDate}}
+  </h2>
 
-<div class="join flex justify-center">
-  <input class="input input-bordered join-item" placeholder="ville" />
-  <button name="ville" class="btn join-item rounded-r-full">Envoyer</button>
+  <!-- Barre de recherche -->
+  <div class="max-w-md mx-auto mb-8">
+    <div class="flex items-center bg-white rounded-lg shadow-md">
+      <input
+        class="flex-1 p-4 rounded-l-lg focus:outline-none"
+        placeholder="Entrez une ville..."
+        [(ngModel)]="city"
+        (keyup.enter)="searchWeather(city)"
+      />
+      <button
+        (click)="searchWeather(city)"
+        class="px-6 py-4 bg-blue-500 text-white rounded-r-lg hover:bg-blue-600 transition-colors"
+        [disabled]="loading">
+        {{loading ? 'Recherche...' : 'Rechercher'}}
+      </button>
+    </div>
+
+    <!-- Message d'erreur -->
+    <div *ngIf="errorMessage" class="text-red-500 mt-2 text-center">
+      {{errorMessage}}
+    </div>
+  </div>
+
+  <!-- Carte météo -->
+  <div class="max-w-2xl mx-auto" *ngIf="weatherData">
+    <div class="bg-white rounded-lg shadow-lg p-6">
+      <div class="text-center mb-6">
+        <h3 class="text-2xl font-semibold text-gray-800">{{weatherData.name}}</h3>
+        <div class="flex justify-center items-center gap-2">
+          <img [src]="getWeatherIconUrl(weatherData.weather[0].icon)" [alt]="weatherData.weather[0].description" class="w-16 h-16">
+          <p class="text-gray-600 capitalize">{{weatherData.weather[0].description}}</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Température -->
+        <div class="p-4 bg-blue-50 rounded-lg">
+          <p class="text-lg font-medium text-gray-700">Température</p>
+          <p class="text-3xl font-bold text-blue-600">
+            {{weatherData.main.temp | number:'1.0-0'}}°C
+          </p>
+          <p class="text-sm text-gray-600">
+            Ressenti: {{weatherData.main.feels_like | number:'1.0-0'}}°C
+          </p>
+        </div>
+
+        <!-- Humidité -->
+        <div class="p-4 bg-green-50 rounded-lg">
+          <p class="text-lg font-medium text-gray-700">Humidité</p>
+          <p class="text-3xl font-bold text-green-600">
+            {{weatherData.main.humidity}}%
+          </p>
+        </div>
+
+        <!-- Vent -->
+        <div class="p-4 bg-yellow-50 rounded-lg">
+          <p class="text-lg font-medium text-gray-700">Vitesse du vent</p>
+          <p class="text-3xl font-bold text-yellow-600">
+            {{weatherData.wind.speed * 3.6 | number:'1.0-0'}} km/h
+          </p>
+        </div>
+
+        <!-- Pression -->
+        <div class="p-4 bg-purple-50 rounded-lg">
+          <p class="text-lg font-medium text-gray-700">Pression</p>
+          <p class="text-3xl font-bold text-purple-600">
+            {{weatherData.main.pressure}} hPa
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading spinner -->
+  <div *ngIf="loading" class="flex justify-center mt-8">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+  </div>
 </div>

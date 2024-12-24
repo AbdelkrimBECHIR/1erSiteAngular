@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
-
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-tamagoshi',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './tamagoshi.component.html',
-  styleUrls: ['./tamagoshi.component.css']
+  styleUrl: './tamagoshi.component.css'
 })
 export class TamagoshiComponent {
   namea: string = "Tchoupi";

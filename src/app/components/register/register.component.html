@@ -1,15 +1,21 @@
-<form [formGroup]="RegisterForm" (ngSubmit)="submitRegisterForm()" class="space-y-12" action="#" method="POST">
+<div class="flex flex-col items-center justify-center w-full h-full space-y-12 ">
+
+
+<form [formGroup]="RegisterForm"  (ngSubmit)="submitRegisterForm()" class="space-y-12" action="#" method="POST">
   <div class="space-y-12">
     <div class="border-b border-gray-900/10 pb-12">
-      <h2 class="text-base/7 font-semibold text-gray-900">Infos d'enregistrement</h2>
-      <p class="mt-1 text-sm/6 text-gray-600">Ces informations sont personnelles. Ne les oubliez pas?.</p>
+      <h2 class="text-base/7 font-semibold text-gray-900 mt-14">S'inscrire</h2>
+      <p class="mt-1 text-sm/6 text-gray-600">Créez un compte pour accéder à toutes les fonctionnalités de l'application.</p>
 
 
-      <div class="grid grid-cols-1 gap-y-6 sm:grid-cols-6 sm:gap-x-6 sm:gap-y-6">
+      <div class="grid grid-cols-1 gap-y-6 sm:grid-cols-6 sm:gap-x-8 sm:gap-y-4">
         <div class="sm:col-span-3">
           <label for="name" class="block text-sm/6 font-medium text-gray-900">Nom</label>
           <div class="mt-1">
             <input formControlName="name" type="text" name="fname" id="name" autocomplete="given-name" required class="block w-full rounded-md bg-white px-3 py-1.5 text-base/6 text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+            @if (nameError()){
+              <p class="text-red-500 text-xs italic">Le nom est requis</p>
+            }
           </div>
         </div>
 
@@ -18,6 +24,9 @@
           <label for="email" class="block text-sm/6 font-medium text-gray-900">Email</label>
           <div class="mt-1">
             <input formControlName="email" type="text" name="email" id="email" autocomplete="email" required class="block w-full rounded-md bg-white px-3 py-1.5 text-base/6 text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+            @if (emailError()) {
+              <p class="text-red-500 text-xs italic">L'email est requis</p>
+            }
           </div>
         </div>
 
@@ -25,6 +34,9 @@
           <label for="password" class="block text-sm/6 font-medium text-gray-900">Mot de passe</label>
           <div class="mt-1">
             <input formControlName="password" type="text" name="password" id="password" autocomplete="password" required class="block w-full rounded-md bg-white px-3 py-1.5 text-base/6 text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+            @if (passwordError()) {
+              <p class="text-red-500 text-xs italic">Le mot de passe est requis</p>
+            }
           </div>
         </div>
 
@@ -32,6 +44,14 @@
         <label for="confirmPassword" class="block text sm/6 font-medium text-gray-900">Confirmer le mot de passe</label>
         <div class="mt-1">
           <input formControlName="confirmPassword" type="text" name="confirmPassword" id="confirmPassword" autocomplete="confirmPassword" required class="block w-full rounded-md bg-white px-3 py-1.5 text-base/6 text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+          @if (passwordError()) {
+            <p class="text-red-500 text-xs italic">Le mot de passe est requis</p>
+          }
+          @if (checkPassword()) {
+            <p class="text-red-500 text-xs italic">Les mots de passe ne correspondent pas</p>
+          }
+
+
         </div>
       </div>
 
@@ -43,4 +63,5 @@
     </div>
   </div>
 </form>
+</div>
 
