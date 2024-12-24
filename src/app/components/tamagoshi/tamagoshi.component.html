@@ -1,11 +1,81 @@
-<div class="justify-center flex flex-col items-center" >
-    <h1 id="title">Hello {{ namea }}</h1>
-    <div id="image" (click)="changeImage()">{{ currentImage }}</div>
-    <div id="etatFaim">Faim <br> {{ etatFaim }} %</div>
-    <div id="etatBonheur">Bonheur <br> {{ etatBonheur }} %</div>
-    <div id="etatEnergie">Énergie <br> {{ etatEnergie }} %</div>
-    <div id="message">{{ message }}</div>
-    <button id="nourrir" (click)="addToEtat('faim')">Nourrir</button>
-    <button id="jouer" (click)="addToEtat('bonheur')">Jouer</button>
-    <button id="dormir" (click)="addToEtat('energie')">Dormir</button>
+<div class="h-screen pt-12 pb-8">
+  <!-- Name Input Screen -->
+  <div *ngIf="!isNameSet" class="max-w-md mx-auto h-full flex flex-col items-center justify-center">
+    <div class="bg-white p-8 rounded-xl shadow-lg w-full">
+      <h2 class="text-2xl font-bold text-center mb-6">Comment voulez-vous appeler votre Tamagoshi ?</h2>
+      <input
+        [(ngModel)]="name"
+        type="text"
+        class="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
+        placeholder="Entrez un nom..."
+      >
+      <button
+        (click)="startGame()"
+        [disabled]="!name.trim()"
+        class="w-full px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed">
+        Commencer le jeu
+      </button>
+    </div>
   </div>
+
+  <!-- Game Screen -->
+  <div *ngIf="isNameSet" class="max-w-3xl mx-auto h-full bg-white rounded-xl shadow-lg overflow-hidden flex flex-col">
+    <!-- Header section -->
+    <div class="bg-gradient-to-r from-indigo-600 to-blue-500 p-4">
+      <h1 class="text-3xl font-bold text-center text-white">Hello {{ name }}</h1>
+    </div>
+
+    <!-- Main content -->
+    <div class="flex-grow p-6 flex flex-col justify-between space-y-4">
+      <!-- Tamagoshi character -->
+      <div class="text-8xl cursor-pointer text-center hover:scale-110 transition-transform duration-300 ease-in-out"
+           (click)="changeImage()">
+        {{ currentImage }}
+      </div>
+
+      <!-- Stats grid -->
+      <div class="grid grid-cols-3 gap-4">
+        <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl shadow-sm">
+          <div class="font-semibold text-blue-800">Faim</div>
+          <div class="text-2xl font-bold text-blue-600">{{ etatFaim }}%</div>
+        </div>
+
+        <div class="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-xl shadow-sm">
+          <div class="font-semibold text-green-800">Bonheur</div>
+          <div class="text-2xl font-bold text-green-600">{{ etatBonheur }}%</div>
+        </div>
+
+        <div class="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-xl shadow-sm">
+          <div class="font-semibold text-purple-800">Énergie</div>
+          <div class="text-2xl font-bold text-purple-600">{{ etatEnergie }}%</div>
+        </div>
+      </div>
+
+      <!-- Message display -->
+      <div class="text-center italic text-gray-600 h-12 bg-gray-50 rounded-lg p-2">
+        {{ message }}
+      </div>
+
+      <!-- Action buttons -->
+      <div class="flex justify-center gap-4">
+        <button
+          (click)="addToEtat('faim')"
+          class="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-md hover:shadow-lg">
+          🍕 Nourrir
+        </button>
+
+        <button
+          (click)="addToEtat('bonheur')"
+          class="px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-300 shadow-md hover:shadow-lg">
+          🏓 Jouer
+        </button>
+
+        <button
+          (click)="addToEtat('energie')"
+          class="px-4 py-2 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg hover:from-purple-600 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg">
+          😴 Dormir
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
