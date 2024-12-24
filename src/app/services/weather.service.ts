@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../environments/environment';
 
 export interface WeatherData {
   weather: [{
@@ -25,7 +26,7 @@ export interface WeatherData {
 })
 export class WeatherService {
   private readonly API_URL = 'https://api.openweathermap.org/data/2.5';
-  private readonly API_KEY = 'e507a5017dfa47ad72775663a0aa1c76';
+  private readonly API_KEY = environment.weatherApiKey;
 
   private http = inject(HttpClient);
 
